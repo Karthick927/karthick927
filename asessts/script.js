@@ -1,37 +1,9 @@
 /* ========================================
    KARTHICK PORTFOLIO — VANILLA JS
+   Red Gradient + Exciting Text Animations
    ======================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ========== Custom Cursor ==========
-    const cursor = document.getElementById('cursor');
-    const cursorTrail = document.getElementById('cursor-trail');
-    let mouseX = 0, mouseY = 0;
-    let trailX = 0, trailY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursor.style.left = mouseX + 'px';
-        cursor.style.top = mouseY + 'px';
-    });
-
-    // Smooth trail following
-    function animateTrail() {
-        trailX += (mouseX - trailX) * 0.15;
-        trailY += (mouseY - trailY) * 0.15;
-        cursorTrail.style.left = trailX + 'px';
-        cursorTrail.style.top = trailY + 'px';
-        requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
-
-    // Cursor hover effects
-    const hoverElements = document.querySelectorAll('a, button, .skill-tag, .project-card, .achievement-card, .contact-card');
-    hoverElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
 
     // ========== Navbar Scroll ==========
     const navbar = document.getElementById('navbar');
@@ -41,14 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleScroll() {
         const scrollY = window.scrollY;
 
-        // Navbar background
         if (scrollY > 50) {
             navbar.classList.add('nav-scrolled');
         } else {
             navbar.classList.remove('nav-scrolled');
         }
 
-        // Active section highlight
         sections.forEach(section => {
             const sectionTop = section.offsetTop - 120;
             const sectionHeight = section.offsetHeight;
@@ -72,16 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
-    // Close mobile menu on link click
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
-    });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    }
 
     // ========== Sana Floating Voice Module ==========
     const sanaBtn = document.getElementById('sana-voice-btn');
@@ -95,55 +66,56 @@ document.addEventListener('DOMContentLoaded', () => {
     let isPlaying = false;
     let panelOpen = false;
 
-    // Toggle panel on avatar click
-    sanaBtn.addEventListener('click', () => {
-        panelOpen = !panelOpen;
-        if (panelOpen) {
-            sanaPanel.classList.remove('hidden');
-        } else {
-            sanaPanel.classList.add('hidden');
-        }
-    });
+    if (sanaBtn && sanaPanel) {
+        sanaBtn.addEventListener('click', () => {
+            panelOpen = !panelOpen;
+            if (panelOpen) {
+                sanaPanel.classList.remove('hidden');
+            } else {
+                sanaPanel.classList.add('hidden');
+            }
+        });
 
-    // Play/Pause inside the panel
-    sanaPlayPause.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (isPlaying) {
-            sanaAudio.pause();
-            sanaPlayIcon.classList.remove('hidden');
-            sanaPauseIcon.classList.add('hidden');
-            sanaWave.classList.remove('active');
-            sanaBtn.classList.remove('playing');
-            sanaStatus.textContent = 'Paused';
-            isPlaying = false;
-        } else {
-            sanaAudio.play();
-            sanaPlayIcon.classList.add('hidden');
-            sanaPauseIcon.classList.remove('hidden');
-            sanaWave.classList.add('active');
-            sanaBtn.classList.add('playing');
-            sanaStatus.textContent = 'Playing voice...';
-            isPlaying = true;
-        }
-    });
+        if (sanaPlayPause && sanaAudio) {
+            sanaPlayPause.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isPlaying) {
+                    sanaAudio.pause();
+                    sanaPlayIcon.classList.remove('hidden');
+                    sanaPauseIcon.classList.add('hidden');
+                    sanaWave.classList.remove('active');
+                    sanaBtn.classList.remove('playing');
+                    sanaStatus.textContent = 'Paused';
+                    isPlaying = false;
+                } else {
+                    sanaAudio.play();
+                    sanaPlayIcon.classList.add('hidden');
+                    sanaPauseIcon.classList.remove('hidden');
+                    sanaWave.classList.add('active');
+                    sanaBtn.classList.add('playing');
+                    sanaStatus.textContent = 'Playing voice...';
+                    isPlaying = true;
+                }
+            });
 
-    sanaAudio.addEventListener('ended', () => {
-        sanaPlayIcon.classList.remove('hidden');
-        sanaPauseIcon.classList.add('hidden');
-        sanaWave.classList.remove('active');
-        sanaBtn.classList.remove('playing');
-        sanaStatus.textContent = 'Click to play again';
-        isPlaying = false;
-    });
-
-    // Close panel when clicking outside
-    document.addEventListener('click', (e) => {
-        const module = document.getElementById('sana-voice-module');
-        if (panelOpen && !module.contains(e.target)) {
-            panelOpen = false;
-            sanaPanel.classList.add('hidden');
+            sanaAudio.addEventListener('ended', () => {
+                sanaPlayIcon.classList.remove('hidden');
+                sanaPauseIcon.classList.add('hidden');
+                sanaWave.classList.remove('active');
+                sanaBtn.classList.remove('playing');
+                sanaStatus.textContent = 'Click to play again';
+                isPlaying = false;
+            });
         }
-    });
+
+        document.addEventListener('click', (e) => {
+            const module = document.getElementById('sana-voice-module');
+            if (panelOpen && module && !module.contains(e.target)) {
+                panelOpen = false;
+                sanaPanel.classList.add('hidden');
+            }
+        });
+    }
 
     // ========== Typewriter Effect ==========
     const typewriterEl = document.getElementById('typewriter');
@@ -175,22 +147,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isDeleting && charIndex === currentPhrase.length) {
             isDeleting = true;
-            typeSpeed = 2000; // Pause at end
+            typeSpeed = 2000;
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             phraseIndex = (phraseIndex + 1) % phrases.length;
-            typeSpeed = 500; // Pause before new word
+            typeSpeed = 500;
         }
 
         setTimeout(typeWriter, typeSpeed);
     }
 
-    typeWriter();
+    if (typewriterEl) {
+        typeWriter();
+    }
 
-    // ========== Particles ==========
+    // ========== Particles (red palette) ==========
     const particlesContainer = document.getElementById('particles-container');
 
     function createParticle() {
+        if (!particlesContainer) return;
+
         const particle = document.createElement('div');
         particle.classList.add('particle');
 
@@ -198,7 +174,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const size = Math.random() * 3 + 1;
         const duration = Math.random() * 8 + 6;
         const delay = Math.random() * 5;
-        const colors = ['rgba(168,85,247,0.4)', 'rgba(99,102,241,0.3)', 'rgba(34,211,238,0.3)', 'rgba(245,158,11,0.2)'];
+
+        const colors = [
+            'rgba(200, 165, 90, 0.15)',
+            'rgba(255, 255, 255, 0.06)',
+            'rgba(200, 165, 90, 0.1)',
+            'rgba(255, 255, 255, 0.04)',
+            'rgba(219, 192, 122, 0.08)',
+        ];
         const color = colors[Math.floor(Math.random() * colors.length)];
 
         particle.style.cssText = `
@@ -212,43 +195,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
         particlesContainer.appendChild(particle);
 
-        // Clean up after animation
         setTimeout(() => {
             particle.remove();
             createParticle();
         }, (duration + delay) * 1000);
     }
 
-    // Create initial particles
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 25; i++) {
         setTimeout(() => createParticle(), i * 200);
     }
 
-    // ========== Intersection Observer — Reveal on Scroll ==========
-    const revealElements = document.querySelectorAll('.reveal-element');
+    // ========== Intersection Observer — ALL ANIMATION CLASSES ==========
+    // This observer triggers ALL animation types on scroll
+    const animationSelectors = [
+        '.anim-reveal-up',
+        '.anim-glow-in',
+        '.anim-slide-right',
+        '.anim-slide-left',
+        '.anim-blur-in',
+        '.anim-scale-rotate',
+        '.anim-bounce-up',
+        '.anim-flip-in',
+        '.anim-stagger',
+        '.anim-gradient-sweep',
+        '.anim-typewrite',
+        '.anim-zoom-blur',
+    ];
 
-    const revealObserver = new IntersectionObserver((entries) => {
+    const allAnimElements = document.querySelectorAll(animationSelectors.join(','));
+
+    const animObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Use the animation-delay from inline style if present
-                const delay = entry.target.style.animationDelay;
-                if (delay) {
-                    const ms = parseFloat(delay) * 1000;
-                    setTimeout(() => {
-                        entry.target.classList.add('revealed');
-                    }, ms);
-                } else {
-                    entry.target.classList.add('revealed');
+                // Get delay from class (delay-1 through delay-8)
+                const el = entry.target;
+                let delayMs = 0;
+                for (let i = 1; i <= 8; i++) {
+                    if (el.classList.contains('delay-' + i)) {
+                        delayMs = i * 100;
+                        break;
+                    }
                 }
-                revealObserver.unobserve(entry.target);
+
+                setTimeout(() => {
+                    el.classList.add('animated');
+                }, delayMs);
+
+                animObserver.unobserve(el);
             }
         });
     }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px',
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px',
     });
 
-    revealElements.forEach(el => revealObserver.observe(el));
+    allAnimElements.forEach(el => animObserver.observe(el));
 
     // ========== Smooth Scroll for Anchor Links ==========
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -265,30 +266,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ========== Parallax on Mouse Move (Hero Section) ==========
-    const hero = document.getElementById('hero');
-
-    hero.addEventListener('mousemove', (e) => {
-        const rect = hero.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-        const heroGrid = hero.querySelector('.hero-grid');
-        if (heroGrid) {
-            heroGrid.style.transform = `translate(${x * 15}px, ${y * 15}px)`;
-        }
-    });
-
-    // ========== Skill Tag Tilt Effect ==========
-    document.querySelectorAll('.skill-category-card').forEach(card => {
+    // ========== Skill Card Tilt Effect ==========
+    document.querySelectorAll('.skill-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 15;
-            const rotateY = (centerX - x) / 15;
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
         });
 
@@ -297,29 +284,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ========== Achievement Card Glow Effect ==========
-    document.querySelectorAll('.achievement-card, .project-card, .contact-card').forEach(card => {
+    // ========== Card Glow Effect ==========
+    document.querySelectorAll('.achieve-card, .project-card, .contact-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            card.style.setProperty('--glow-x', x + 'px');
-            card.style.setProperty('--glow-y', y + 'px');
-            card.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(168,85,247,0.04), transparent 40%), rgba(255,255,255,0.02)`;
+            card.style.background = `radial-gradient(500px circle at ${x}px ${y}px, rgba(200,165,90,0.03), transparent 40%), var(--black, #000)`;
         });
 
         card.addEventListener('mouseleave', () => {
-            card.style.background = 'rgba(255,255,255,0.02)';
+            card.style.background = '';
         });
     });
 
     // ========== Console Easter Egg ==========
     console.log(
-        '%c🚀 Karthick\'s Portfolio',
-        'font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #a855f7, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'
+        '%c✨ Karthick\'s Portfolio',
+        'font-size: 24px; font-weight: bold; color: #c8a55a;'
     );
     console.log(
-        '%cBuilding AI tools & backend systems — Let\'s connect!',
-        'font-size: 14px; color: #888;'
+        '%cBuilding AI tools & backend systems — crafted with care',
+        'font-size: 14px; color: #777;'
     );
 });
